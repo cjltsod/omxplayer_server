@@ -4,7 +4,7 @@ from pyomxplayer import OMXPlayer
 import threading
 
 
-class thread_player(threading.Thread):
+class ThreadPlayer(threading.Thread):
     def __init__(self, omxplayer_queue, path, *args):
         self.omxplayer_queue = omxplayer_queue
         self.path = path
@@ -23,23 +23,22 @@ class thread_player(threading.Thread):
                 break
 
 
-class thread_playlist(threading.Thread):
+class ThreadPlaylist(threading.Thread):
     def __init__(self, playlist_queue, omxplayer_queue):
         self.playlist_queue = playlist_queue
         self.omxplayer_queue = omxplayer_queue
         threading.Thread.__init__(self)
 
-
     def run(self):
         while True:
             path = self.playlist_queue.get()
-            current_thread = thread_player(self.omxplayer_queue, path)
+            current_thread = ThreadPlayer(self.omxplayer_queue, path)
             current_thread.start()
             current_thread.join()
             self.playlist_queue.task_done()
 
 
-class thread_controller(threading.Thread):
+class ThreadController(threading.Thread):
     def __init__(self, cmd_queue, playlist_queue, omxplayer_queue):
         self.cmd_queue = cmd_queue
         self.omxplayer_queue = omxplayer_queue
@@ -97,12 +96,16 @@ def includeme(config):
     cmd_queue = Queue()
     omxplayer_queue = Queue()
 
+    config.add_route('omx_play', '/play/{directory}')
+    config.add_route('omx_cmd', '/cmd/{cmd}')
+    config.add_route('omx_panel', '/')
+
     settings['omxplayer_cmd_queue'] = cmd_queue
     settings['omxplayer_playlist_queue'] = playlist_queue
     settings['omxplayer_queue'] = omxplayer_queue
 
-    playlist_thread = thread_playlist(playlist_queue, omxplayer_queue)
-    controller_thread = thread_controller(cmd_queue, playlist_queue, omxplayer_queue)
+    playlist_thread = ThreadPlaylist(playlist_queue, omxplayer_queue)
+    controller_thread = ThreadController(cmd_queue, playlist_queue, omxplayer_queue)
 
     settings['omxplayer_playlist_thread'] = playlist_thread
     settings['omxplayer_controller_thread'] = controller_thread
