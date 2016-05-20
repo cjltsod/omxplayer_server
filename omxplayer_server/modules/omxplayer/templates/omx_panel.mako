@@ -43,14 +43,14 @@
                     <option>${each}</option>
                     % endfor
                   </select>
-                  <button type="button" class="btn btn-default" onclick="add_to_playlist()"><i class="fa fa-plus" title="Add to playlist"></i></button>
+                  <button type="button" class="btn btn-default btn-lg" onclick="add_to_playlist()"><i class="fa fa-plus" title="Add to playlist"></i></button>
                 </div>
                 </form>
               </p>
               <p class="lead">
                 <div class="btn-group" role="group">
                 % for each_cmd in available_cmd:
-                <button class="btn btn-default" href="#" onclick="execute_cmd('${each_cmd['cmd']}')"><i class="fa ${each_cmd['icon']}" title="${each_cmd['description']}"></i> </button>
+                <button class="btn btn-default btn-lg" href="#" onclick="execute_cmd('${each_cmd['cmd']}')"><i class="fa ${each_cmd['icon']}" title="${each_cmd['description']}"></i> </button>
                 % endfor
                 </div>
               </p>
