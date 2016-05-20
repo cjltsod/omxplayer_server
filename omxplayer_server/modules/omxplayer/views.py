@@ -71,7 +71,7 @@ def omx_panel(request):
         target_dir = '/mnt/RecordingUpload/RecordingUpload/'
         file_list = os.listdir(target_dir)
         onlydirs = [ f for f in file_list if os.path.isdir(os.path.join(target_dir ,f))]
-        onlydirs.sort()
+        onlydirs.sort(reverse=True)
     except:
         onlydirs = ['20160101_FAKE']
 
