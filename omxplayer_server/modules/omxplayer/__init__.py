@@ -14,6 +14,7 @@ class thread_player(threading.Thread):
     def run(self):
         omx = OMXPlayer(self.path, args=self.args)
         self.omxplayer_queue.put(omx)
+        omx.toggle_pause()
         while True:
             sleep(1)
             if not omx.is_running():
