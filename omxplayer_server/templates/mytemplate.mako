@@ -56,8 +56,6 @@
       </div>
     </div>
 
-    % if 1/0 :
-    % endif
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
