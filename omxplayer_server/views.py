@@ -35,7 +35,7 @@ def cmd_omx(request):
     ]
 
     _return = dict()
-    if cmd not in available_command_list:
+    if cmd in available_command_list:
         request.registry.settings['omxplayer_cmd_queue'].put(cmd)
         _return['status'] = 'OK'
     else:
