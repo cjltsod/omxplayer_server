@@ -10,7 +10,7 @@ def my_view(request):
 @view_config(route_name='play_omx', renderer='json')
 def play_omx(request):
     directory = request.matchdict.get('directory', '20160410_EA')
-    target_dir = '/mnt/RecordingUpload/RecordingUpload/'.format(directory)
+    target_dir = '/mnt/RecordingUpload/RecordingUpload/{}'.format(directory)
     file_list = list()
 
     for eachFile in os.listdir(target_dir):
