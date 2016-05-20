@@ -50,7 +50,7 @@
               <p class="lead">
                 <div class="btn-group" role="group">
                 % for each_cmd in available_cmd:
-                <a class="btn btn-default" href="#" onclick="execute_cmd('${each_cmd['cmd']}')"><i class="fa ${each_cmd['icon']}" title="${each_cmd['description']}"></i> </a>
+                <button class="btn btn-default" href="#" onclick="execute_cmd('${each_cmd['cmd']}')"><i class="fa ${each_cmd['icon']}" title="${each_cmd['description']}"></i> </button>
                 % endfor
                 </div>
               </p>
