@@ -60,7 +60,7 @@ class ThreadHeartbeat(threading.Thread):
 
                 if json_res.get('reboot'):
                     print('rebooting')
-                    # call('reboot', shell=False)
+                    call('reboot', shell=False)
             except:
                 pass
                 print('error')
