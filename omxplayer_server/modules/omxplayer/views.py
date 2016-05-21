@@ -5,7 +5,7 @@ from pyramid.view import view_config
 
 @view_config(route_name='omx_play', renderer='json')
 def omx_play(request):
-    directory = request.matchdict.get('directory', '20160410_EA')
+    directory = request.matchdict.get('directory')
     target_dir = os.path.join('/mnt/RecordingUpload/RecordingUpload', directory)
     play_list = list()
     _return = dict()

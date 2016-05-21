@@ -1,7 +1,71 @@
 from queue import Queue
 from time import sleep
-from pyomxplayer import OMXPlayer
+from urllib.request import urlopen
+from urllib.parse import urlencode
+from subprocess import call, check_output
+import pkg_resources
 import threading
+import json
+
+from pyomxplayer import OMXPlayer
+from netifaces import interfaces, ifaddresses, AF_INET
+
+
+class ThreadHeartbeat(threading.Thread):
+    def __init__(self):
+        self.version = pkg_resources.get_distribution('omxplayer_server').version
+        threading.Thread.__init__(self)
+
+    def get_ip(self):
+        ip_dict = dict()
+        for ifaceName in interfaces():
+            addresses = [i['addr'] for i in ifaddresses(ifaceName).setdefault(AF_INET, [{'addr': None}])]
+            ip_dict[ifaceName] = addresses
+        return ip_dict
+
+    def get_tv_no(self):
+        output = check_output(['teamviewer', 'info']).decode('utf-8')
+        tv_str = output[output.find('TeamViewer ID:') + len('TeamViewer ID:'):].strip().strip('\x1b[0m').strip()
+        if tv_str.isdigit():
+            return tv_str
+        else:
+            raise Exception('Parsing error: {}'.format(tv_str))
+
+    def run(self):
+        boot = True
+        while True:
+            try:
+                identify = '1234567'  # self.get_tv_no()
+                json_data = {
+                    'tv_no': identify,
+                    'ip_addr': self.get_ip(),
+                    'version': self.version,
+                }
+                req_json = json.dumps(json_data)
+
+                url = 'http://staff.mecpro.com.tw/omx_heartbeat/{}'.format(identify)
+                url = 'http://192.168.1.103:6543/omx_heartbeat/{}'.format(identify)
+
+                if boot:
+                    url = url + '?boot=1'
+                data = urlencode(dict(data=req_json)).encode('utf-8')
+                response = urlopen(url, data=data)
+                json_res = json.loads(response.read().decode('utf-8'))
+
+                boot = False
+
+                if json_res.get('update'):
+                    print('pulling')
+                    call(['git', 'pull'], shell=False)
+
+                if json_res.get('reboot'):
+                    print('rebooting')
+                    # call('reboot', shell=False)
+            except:
+                pass
+                print('error')
+            sleep(10)
+
 
 
 class ThreadPlayer(threading.Thread):
@@ -106,9 +170,11 @@ def includeme(config):
 
     playlist_thread = ThreadPlaylist(playlist_queue, omxplayer_queue)
     controller_thread = ThreadController(cmd_queue, playlist_queue, omxplayer_queue)
+    heartbeat_thread = ThreadHeartbeat()
 
     settings['omxplayer_playlist_thread'] = playlist_thread
     settings['omxplayer_controller_thread'] = controller_thread
 
     playlist_thread.start()
     controller_thread.start()
+    heartbeat_thread.start()
