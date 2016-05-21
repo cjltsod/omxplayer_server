@@ -59,8 +59,7 @@ class ThreadHeartbeat(threading.Thread):
                     call(['git', 'pull'], shell=False)
 
                 if json_res.get('reboot'):
-                    print('rebooting')
-                    call(['reboot'], shell=False)
+                    call(['sudo', 'shutdown', '-r', 'now'], shell=False)
             except:
                 pass
                 print('error')
