@@ -35,7 +35,7 @@ class ThreadHeartbeat(threading.Thread):
         boot = True
         while True:
             try:
-                identify = '1234567'  # self.get_tv_no()
+                identify = self.get_tv_no()
                 json_data = {
                     'tv_no': identify,
                     'ip_addr': self.get_ip(),
