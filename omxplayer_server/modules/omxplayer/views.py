@@ -37,6 +37,7 @@ def omx_cmd(request):
         'mute', 'inc_vol', 'dec_vol',
         'back_30', 'back_600', 'forward_30', 'forward_600',
         'inc_speed', 'dec_speed',
+        'update', 'reboot',
     ]
 
     _return = dict()
