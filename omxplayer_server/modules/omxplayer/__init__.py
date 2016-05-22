@@ -32,8 +32,8 @@ class ThreadHeartbeat(threading.Thread):
             raise Exception('Parsing error: {}'.format(tv_str))
 
     def get_temp(self):
-        output = check_output(['/opt/vc/bin/vcgencnd', 'measure_temp']).decode('utf-8')
-        temp = output.strip('temp-').strip('\'C')
+        output = check_output(['/opt/vc/bin/vcgencmd', 'measure_temp']).decode('utf-8')
+        temp = output.strip().strip('temp=').strip('\'C')
         return temp
 
     def run(self):
