@@ -110,7 +110,9 @@ class ThreadController(threading.Thread):
     def run(self):
         while True:
             cmd = self.cmd_queue.get()
-            omx = self.omxplayer_queue.get()
+            if cmd not in ['reboot', 'update']:
+                omx = self.omxplayer_queue.get()
+
             if cmd == 'pause':
                 omx.toggle_pause()
             elif cmd == 'next':
