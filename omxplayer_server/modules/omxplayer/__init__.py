@@ -55,7 +55,6 @@ class ThreadHeartbeat(threading.Thread):
                 boot = False
 
                 if json_res.get('update'):
-                    print('pulling')
                     call(['git', 'pull'], shell=False)
 
                 if json_res.get('reboot'):
@@ -63,7 +62,7 @@ class ThreadHeartbeat(threading.Thread):
             except:
                 pass
                 print('error')
-            sleep(10)
+            sleep(60)
 
 
 
@@ -143,6 +142,10 @@ class ThreadController(threading.Thread):
                 omx.inc_speed()
             elif cmd == 'dec_speed':
                 omx.dec_speed()
+            elif cmd == 'reboot':
+                call(['sudo', 'shutdown', '-r', 'now'], shell=False)
+            elif cmd == 'update':
+                call(['git', 'pull'], shell=False)
             else:
                 pass
                 # unknown command
