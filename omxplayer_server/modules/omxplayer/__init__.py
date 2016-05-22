@@ -31,6 +31,11 @@ class ThreadHeartbeat(threading.Thread):
         else:
             raise Exception('Parsing error: {}'.format(tv_str))
 
+    def get_temp(self):
+        output = check_output(['/opt/vc/bin/vcgencnd', 'measure_temp']).decode('utf-8')
+        temp = output.strip('temp-').strip('\'C')
+        return temp
+
     def run(self):
         boot = True
         while True:
@@ -40,6 +45,7 @@ class ThreadHeartbeat(threading.Thread):
                     'tv_no': identify,
                     'ip_addr': self.get_ip(),
                     'version': self.version,
+                    'temperature': self.get_temp(),
                 }
                 req_json = json.dumps(json_data)
 
