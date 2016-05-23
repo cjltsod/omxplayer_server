@@ -40,6 +40,7 @@ class ThreadHeartbeat(threading.Thread):
     def run(self):
         boot = True
         while True:
+            short_sleep = False
             try:
                 identify = self.get_tv_no()
                 json_data = {
@@ -67,9 +68,12 @@ class ThreadHeartbeat(threading.Thread):
                     call(['sudo', 'shutdown', '-r', 'now'], shell=False)
             except:
                 print('Exception happened when hearbeat.')
+                short_sleep = True
+
+            if short_sleep:
                 sleep(5)
-                continue
-            sleep(60)
+            else:
+                sleep(60)
 
 
 
