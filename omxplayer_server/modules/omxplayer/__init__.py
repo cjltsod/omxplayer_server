@@ -12,8 +12,9 @@ from netifaces import interfaces, ifaddresses, AF_INET
 
 
 class ThreadHeartbeat(threading.Thread):
-    def __init__(self):
+    def __init__(self, server):
         self.version = pkg_resources.get_distribution('omxplayer_server').version
+        self.server = server
         threading.Thread.__init__(self)
 
     def get_ip(self):
@@ -49,8 +50,7 @@ class ThreadHeartbeat(threading.Thread):
                 }
                 req_json = json.dumps(json_data)
 
-                url = 'http://staff.mecpro.com.tw/omx_heartbeat/{}'.format(identify)
-                url = 'http://192.168.1.103:6543/omx_heartbeat/{}'.format(identify)
+                url = self.server + '{}'.format(identify)
 
                 if boot:
                     url = url + '?boot=1'
@@ -180,7 +180,7 @@ def includeme(config):
 
     playlist_thread = ThreadPlaylist(playlist_queue, omxplayer_queue)
     controller_thread = ThreadController(cmd_queue, playlist_queue, omxplayer_queue)
-    heartbeat_thread = ThreadHeartbeat()
+    heartbeat_thread = ThreadHeartbeat(server=settings['omx_heartbeat.server'])
 
     settings['omxplayer_playlist_thread'] = playlist_thread
     settings['omxplayer_controller_thread'] = controller_thread
