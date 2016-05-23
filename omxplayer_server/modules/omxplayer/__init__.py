@@ -66,8 +66,9 @@ class ThreadHeartbeat(threading.Thread):
                 if json_res.get('reboot'):
                     call(['sudo', 'shutdown', '-r', 'now'], shell=False)
             except:
-                pass
-                print('error')
+                print('Exception happened when hearbeat.')
+                sleep(5)
+                coninue
             sleep(60)
 
 
