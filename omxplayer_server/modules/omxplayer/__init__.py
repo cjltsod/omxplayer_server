@@ -119,6 +119,8 @@ class ThreadController(threading.Thread):
             cmd = self.cmd_queue.get()
             if cmd not in ['reboot', 'update']:
                 omx = self.omxplayer_queue.get()
+            else:
+                omx = None
 
             if cmd == 'pause':
                 omx.toggle_pause()
@@ -159,8 +161,9 @@ class ThreadController(threading.Thread):
                 pass
                 # unknown command
 
-            self.omxplayer_queue.put(omx)
-            self.omxplayer_queue.task_done()
+            if omx:
+                self.omxplayer_queue.put(omx)
+                self.omxplayer_queue.task_done()
             self.cmd_queue.task_done()
 
 
