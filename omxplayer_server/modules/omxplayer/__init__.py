@@ -68,7 +68,7 @@ class ThreadHeartbeat(threading.Thread):
             except:
                 print('Exception happened when hearbeat.')
                 sleep(5)
-                coninue
+                continue
             sleep(60)
 
 
