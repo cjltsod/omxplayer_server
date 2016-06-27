@@ -9,6 +9,7 @@ import json
 
 from pyomxplayer import OMXPlayer
 from netifaces import interfaces, ifaddresses, AF_INET
+from pyramid.events import ApplicationCreated
 
 
 class ThreadHeartbeat(threading.Thread):
@@ -74,7 +75,6 @@ class ThreadHeartbeat(threading.Thread):
                 sleep(5)
             else:
                 sleep(60)
-
 
 
 class ThreadPlayer(threading.Thread):
@@ -171,6 +171,13 @@ class ThreadController(threading.Thread):
             self.cmd_queue.task_done()
 
 
+def application_created_callback(event):
+    settings = event.app.registry.settings
+
+    settings['omxplayer_playlist_thread'].start()
+    settings['omxplayer_controller_thread'].start()
+    settings['omxplayer_heartbeat_thread'].start()
+
 
 def includeme(config):
     settings = config.registry.settings
@@ -192,7 +199,7 @@ def includeme(config):
 
     settings['omxplayer_playlist_thread'] = playlist_thread
     settings['omxplayer_controller_thread'] = controller_thread
+    settings['omxplayer_heartbeat_thread'] = heartbeat_thread
 
-    playlist_thread.start()
-    controller_thread.start()
-    heartbeat_thread.start()
+    config.add_subscriber(application_created_callback, ApplicationCreated)
+
