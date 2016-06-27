@@ -64,6 +64,7 @@ class ThreadHeartbeat(threading.Thread):
 
                 if json_res.get('update'):
                     call(['git', 'pull'], shell=False)
+                    call(['chmod', 'u+x', 'reboot.sh'], shell=False)
 
                 if json_res.get('reboot'):
                     call(['sudo', 'shutdown', '-r', 'now'], shell=False)
