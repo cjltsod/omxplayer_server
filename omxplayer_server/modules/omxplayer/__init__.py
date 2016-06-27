@@ -63,6 +63,7 @@ class ThreadHeartbeat(threading.Thread):
                 boot = False
 
                 if json_res.get('update'):
+                    call(['git', 'checkout' '--' '.'], shell=False)
                     call(['git', 'pull'], shell=False)
                     call(['chmod', 'u+x', 'reboot.sh'], shell=False)
 
