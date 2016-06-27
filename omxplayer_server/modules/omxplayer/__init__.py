@@ -13,7 +13,7 @@ from pyramid.events import ApplicationCreated
 
 
 def update():
-    call(['git', 'checkout' '--' '.'], shell=False)
+    call(['git', 'checkout', '--', '.'], shell=False)
     call(['git', 'pull'], shell=False)
     call(['chmod', 'u+x', 'reboot.sh'], shell=False)
 
@@ -33,7 +33,7 @@ class ThreadHeartbeat(threading.Thread):
 
     def get_tv_no(self):
         output = check_output(['teamviewer', 'info']).decode('utf-8')
-        tv_str = output[output.find('TeamViewer ID:') + len('TeamViewer ID:'):].strip().strip('\x1b[0m').strip()
+        tv_str = output[output.find('TeamViewer ID:') + len('TeamViewer ID:'):].strip().split()[-1]
         if tv_str.isdigit():
             return tv_str
         else:
