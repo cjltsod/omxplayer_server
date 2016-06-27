@@ -12,6 +12,12 @@ from netifaces import interfaces, ifaddresses, AF_INET
 from pyramid.events import ApplicationCreated
 
 
+def update():
+    call(['git', 'checkout' '--' '.'], shell=False)
+    call(['git', 'pull'], shell=False)
+    call(['chmod', 'u+x', 'reboot.sh'], shell=False)
+
+
 class ThreadHeartbeat(threading.Thread):
     def __init__(self, server):
         self.version = pkg_resources.get_distribution('omxplayer_server').version
@@ -63,9 +69,7 @@ class ThreadHeartbeat(threading.Thread):
                 boot = False
 
                 if json_res.get('update'):
-                    call(['git', 'checkout' '--' '.'], shell=False)
-                    call(['git', 'pull'], shell=False)
-                    call(['chmod', 'u+x', 'reboot.sh'], shell=False)
+                    update()
 
                 if json_res.get('reboot'):
                     call(['sudo', 'shutdown', '-r', 'now'], shell=False)
@@ -162,7 +166,7 @@ class ThreadController(threading.Thread):
             elif cmd == 'reboot':
                 call(['sudo', 'shutdown', '-r', 'now'], shell=False)
             elif cmd == 'update':
-                call(['git', 'pull'], shell=False)
+                update()
             else:
                 pass
                 # unknown command
