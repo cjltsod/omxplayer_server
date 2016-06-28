@@ -6,6 +6,7 @@ from subprocess import call, check_output
 import pkg_resources
 import threading
 import json
+import sys
 
 from pyomxplayer import OMXPlayer
 from netifaces import interfaces, ifaddresses, AF_INET
@@ -44,8 +45,18 @@ class ThreadHeartbeat(threading.Thread):
         temp = output.strip().strip('temp=').strip('\'C')
         return temp
 
+    def test_self_connect(self):
+        try:
+            response = urlopen('http://127.0.0.1:8080')
+            return True
+        except:
+            return False
+
     def run(self):
         boot = True
+        if self.test_self_connect():
+            sys.exit()
+
         while True:
             short_sleep = False
             try:
