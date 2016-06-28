@@ -8,6 +8,8 @@ import threading
 import json
 import sys
 import time
+import os
+import signal
 
 from pyomxplayer import OMXPlayer
 from netifaces import interfaces, ifaddresses, AF_INET
@@ -59,9 +61,10 @@ class ThreadHeartbeat(threading.Thread):
     def run(self):
         boot = True
         time.sleep(5)
-        if self.test_self_connect():
+        if not self.test_self_connect():
             print('Exception happend when self connect.')
-            sys.exit()
+            os.kill(os.getpid(), signal.SIGKILL)
+            sys.exit(1)
 
         while True:
             short_sleep = False
