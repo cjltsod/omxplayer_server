@@ -7,6 +7,7 @@ import pkg_resources
 import threading
 import json
 import sys
+import time
 
 from pyomxplayer import OMXPlayer
 from netifaces import interfaces, ifaddresses, AF_INET
@@ -54,6 +55,7 @@ class ThreadHeartbeat(threading.Thread):
 
     def run(self):
         boot = True
+        time.sleep(5)
         if self.test_self_connect():
             sys.exit()
 
