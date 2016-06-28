@@ -60,6 +60,7 @@ class ThreadHeartbeat(threading.Thread):
         boot = True
         time.sleep(5)
         if self.test_self_connect():
+            print('Exception happend when self connect.')
             sys.exit()
 
         while True:
