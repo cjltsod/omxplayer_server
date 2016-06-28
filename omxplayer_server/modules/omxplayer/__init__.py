@@ -29,7 +29,7 @@ class ThreadHeartbeat(threading.Thread):
         threading.Thread.__init__(self)
 
     def get_git_version(self):
-        return check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
+        return check_output(['git', 'rev-parse', '--short', 'HEAD']).decode('utf-8').strip()
 
     def get_ip(self):
         ip_dict = dict()
