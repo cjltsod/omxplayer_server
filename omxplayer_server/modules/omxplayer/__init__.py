@@ -26,6 +26,9 @@ class ThreadHeartbeat(threading.Thread):
         self.server = server
         threading.Thread.__init__(self)
 
+    def get_git_version(self):
+        return check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
+
     def get_ip(self):
         ip_dict = dict()
         for ifaceName in interfaces():
@@ -66,7 +69,7 @@ class ThreadHeartbeat(threading.Thread):
                 json_data = {
                     'tv_no': identify,
                     'ip_addr': self.get_ip(),
-                    'version': self.version,
+                    'version': self.get_git_version(),
                     'temperature': self.get_temp(),
                 }
                 req_json = json.dumps(json_data)
