@@ -126,6 +126,8 @@ class ThreadPlayer(threading.Thread):
                 wait_time = wait_time - 1
                 if wait_time <= 0:
                     omx.stop()
+            else:
+                last_postition = omx.position
 
 
 class ThreadPlaylist(threading.Thread):
