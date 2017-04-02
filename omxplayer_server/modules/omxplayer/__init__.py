@@ -114,12 +114,18 @@ class ThreadPlayer(threading.Thread):
         omx = OMXPlayer(self.path, args=self.args)
         self.omxplayer_queue.put(omx)
         omx.toggle_pause()
+        last_postition = 0
+        wait_time = 10
         while True:
             sleep(1)
             if not omx.is_running():
                 self.omxplayer_queue.get()
                 self.omxplayer_queue.task_done()
                 break
+            elif not omx.paused and omx.position == last_postition:
+                wait_time = wait_time - 1
+                if wait_time <= 0:
+                    omx.stop()
 
 
 class ThreadPlaylist(threading.Thread):
