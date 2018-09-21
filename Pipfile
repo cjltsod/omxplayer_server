@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pyramid = "*"
+netifaces = "*"
+pyomxplayer = {editable = true, ref = "f9e75ccb990ac17e9d043c17b741d680ca1f5428", git = "https://github.com/cjltsod/pyomxplayer.git"}
+waitress = "*"
+pexpect = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"

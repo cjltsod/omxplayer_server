@@ -41,6 +41,9 @@ class ThreadHeartbeat(threading.Thread):
     def get_tv_no(self):
         output = check_output(['teamviewer', 'info']).decode('utf-8')
         tv_str = output[output.find('TeamViewer ID:') + len('TeamViewer ID:'):].strip().split()[-1]
+        if not tv_str.isdigit():
+            tv_str = output[output.find('TeamViewer ID:') + len('TeamViewer ID:'):].split('\n')[0].split()[-1]
+
         if tv_str.isdigit():
             return tv_str
         else:
