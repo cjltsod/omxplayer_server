@@ -195,7 +195,7 @@ class ThreadController(threading.Thread):
             elif cmd == 'dec_speed':
                 omx.dec_speed()
             elif cmd == 'reboot':
-                call(['sudo', 'shutdown', '-r', 'now'], shell=False)
+                call(['sudo', 'reboot'], shell=False)
             elif cmd == 'update':
                 update()
             else:
