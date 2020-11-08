@@ -39,7 +39,7 @@ class ThreadHeartbeat(threading.Thread):
         return ip_dict
 
     def get_tv_no(self):
-        output = check_output(['teamviewer', 'info']).decode('utf-8')
+        output = check_output(['sudo', 'teamviewer', 'info']).decode('utf-8')
         tv_str = output[output.find('TeamViewer ID:') + len('TeamViewer ID:'):].strip().split()[-1]
         if not tv_str.isdigit():
             tv_str = output[output.find('TeamViewer ID:') + len('TeamViewer ID:'):].split('\n')[0].split()[-1]
