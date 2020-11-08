@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 pyramid = "*"
 netifaces = "*"
-pyomxplayer = {editable = true, ref = "f9e75ccb990ac17e9d043c17b741d680ca1f5428", git = "https://github.com/cjltsod/pyomxplayer.git"}
+pyomxplayer = {editable = true, ref = "2731b97b88ef9659598b76eb23507980a90b96c5", git = "https://github.com/cjltsod/pyomxplayer.git"}
 waitress = "*"
 pexpect = "*"
 
